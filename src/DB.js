@@ -1,15 +1,143 @@
-const {sql, DataTypes} = require('sequelize');
-const sequelize = new Sequelize("usersdb2", "root", "123456", {
+const {Sequelize, DataTypes} = require('sequelize');
+const sequelize = new Sequelize("RepairTrain", "postgres", "1488", {
     dialect: "postgres",
-    host: "localhost"
-  });
+    host: "localhost",
+    define:{
+      timestamps:false
+}});
 
-const User = sql.define("User", 
-{
-userName:{
+const User = sequelize.define("user",{
+  userName:{
     type: DataTypes.STRING,
-    autoIncrement: true,
     primaryKey: true,
+  },
+  password:{
+    type: DataTypes.STRING,
+    allowNull:false,
+  }
+});
+
+const Emergency = sequelize.define("emergency",{
+  ID:{
+    type: DataTypes.INTEGER,
+    autoIncrement:true,
+    primaryKey:true,
+  },
+  Geolocation:{
+    type: DataTypes.STRING,
+  },
+  Time:{
+    type: DataTypes.DATE,
+  },
+});
+
+const RepairTrain = sequelize.define("repairtrain",{
+  TrainNumber:{
+    type: DataTypes.INTEGER,
+    autoIncrement:true,
+    primaryKey:true,
+  },
+  Manager:{
+    type: DataTypes.STRING,
+    allowNull: false,
+  }
+});
+
+const Infrastructure = sequelize.define("infrastructure",{
+  ID:{
+    type: DataTypes.INTEGER,
+    autoIncrement:true,
+    primaryKey:true,
+  },
+  State:{
+    type: DataTypes.STRING,
+    allowNull:false,
+  }
+});
+
+const Casualties = sequelize.define("casualties",{
+  ID:{
+    type: DataTypes.INTEGER,
+    autoIncrement:true,
+    primaryKey:true,
+  },
+  State:{
+    type: DataTypes.STRING,
+    allowNull:false,
+  }
+});
+
+const CargoState = sequelize.define("cargostate",
+{
+  ID:{
+    type: DataTypes.INTEGER,
+    autoIncrement:true,
+    primaryKey:true,
+  },
+  State:{
+    type: DataTypes.STRING,
+    allowNull:false,
+  }
+});
+
+const CargoClassification = sequelize.define("cargoclass",{
+  ID:{
+    type: DataTypes.INTEGER,
+    autoIncrement:true,
+    primaryKey:true,
+  },
+  Class:{
+    type: DataTypes.STRING,
+    allowNull:false,
+  }
+});
+
+const Railway = sequelize.define("railway",{
+  ID:{
+    type: DataTypes.INTEGER,
+    autoIncrement:true,
+    primaryKey:true,
+  },
+  Name:{
+    type: DataTypes.STRING,
+    allowNull:false,
+  }
+});
+
+const CargoTrain = sequelize.define("cargotrain",{
+  ID:{
+    type: DataTypes.INTEGER,
+    autoIncrement:true,
+    primaryKey:true,
+  }
+});
+
+CargoClassification.hasMany(CargoTrain);
+CargoTrain.belongsTo(CargoClassification);
+
+CargoState.hasMany(CargoTrain);
+CargoTrain.belongsTo(CargoState);
+
+CargoTrain.hasMany(Emergency);
+Emergency.belongsTo(CargoTrain);
+
+RepairTrain.hasMany(Emergency);
+Emergency.belongsTo(RepairTrain);
+
+Infrastructure.hasMany(Emergency);
+Emergency.belongsTo(Infrastructure);
+
+Casualties.hasMany(Emergency);
+Emergency.belongsTo(Casualties);
+
+Railway.hasMany(Emergency);
+Emergency.belongsTo(Railway);
+
+(async function(){
+try {
+  await sequelize.sync();
+  console.log('Connection has been established successfully.');
+} catch (error) {
+  console.error('Unable to connect to the database:', error);
 }
-}
-);
+}())
