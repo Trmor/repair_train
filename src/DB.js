@@ -133,11 +133,16 @@ Emergency.belongsTo(Casualties);
 Railway.hasMany(Emergency);
 Emergency.belongsTo(Railway);
 
-(async function(){
-try {
-  await sequelize.sync();
-  console.log('Connection has been established successfully.');
-} catch (error) {
-  console.error('Unable to connect to the database:', error);
-}
-}())
+module.exports = {
+    sequelize,
+    User,
+    Emergency,
+    RepairTrain,
+    Infrastructure,
+    Casualties,
+    CargoState,
+    CargoClassification,
+    Railway,
+    CargoTrain
+};
+
