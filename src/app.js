@@ -1,4 +1,4 @@
-const DB = require("./");
+const DB = require("./DB");
 const http = require('http');
 const express = require("express");
 const app = express();
@@ -6,6 +6,7 @@ const urlencodedParser = express.urlencoded({extended:false});
 let isLogin = false; //под логин
 const sequelize = DB.sequelize;
 
+app.use(express.static(__dirname + "/public"));
 app.set("view engine", "hbs");
 
 sequelize.sync().then(()=>{
@@ -20,9 +21,7 @@ app.get("/emergency", function(request, response){
     if(!isLogin){
         response.redirect("/");
     }
-    else{
-        response.render("emergency");
-    }
+    response.render("emergency");
 });
 app.get("/login", function(request, response){
     isLogin = true;

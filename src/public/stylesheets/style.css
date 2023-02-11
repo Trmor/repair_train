@@ -1,0 +1,12 @@
+.wrapper {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+}
+.block {
+    border-radius: 25px;
+    border: 2px solid rgb(36, 36, 36);
+    padding: 20px;
+    width: 200px;
+    height: 150px;
+    margin:auto;
+}
