@@ -21,8 +21,22 @@ app.get("/emergency", function(request, response){
     if(!isLogin){
         response.redirect("/");
     }
-    response.render("emergency");
+    DB.Emergency.findAll(
+        {
+        include:{
+            all:true,
+            nested:true
+        },
+        raw:true,
+        }
+        ).then(data=>{
+        console.log(data);
+        response.render("emergency", {
+            Emergencies:data
+        });
+    }).catch(err=>console.log(err));  
 });
+
 app.get("/login", function(request, response){
     isLogin = true;
     response.redirect("/emergency")
