@@ -13,14 +13,19 @@ sequelize.sync().then(()=>{
     app.listen(3000);
 }).catch(err=>console.log(err));
 
+// app.use(function(request, response, next){
+//     if(!isLogin && request.path!='/'){//log in system, run before accessing the
+//         response.redirect("/");
+//     }
+//     next();
+// });
+
+
 app.get("/", function(request, response){
     response.render("index");
 });
 
 app.get("/emergency", function(request, response){
-    if(!isLogin){
-        response.redirect("/");
-    }
     DB.Emergency.findAll(
         {
         include:{
