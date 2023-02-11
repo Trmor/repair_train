@@ -29,6 +29,9 @@ const Emergency = sequelize.define("emergency",{
   Time:{
     type: DataTypes.DATE,
   },
+  TrainID:{
+    type: DataTypes.STRING,
+  }
 });
 
 const RepairTrain = sequelize.define("repairtrain",{
@@ -104,22 +107,11 @@ const Railway = sequelize.define("railway",{
   }
 });
 
-const CargoTrain = sequelize.define("cargotrain",{
-  ID:{
-    type: DataTypes.INTEGER,
-    autoIncrement:true,
-    primaryKey:true,
-  }
-});
+CargoClassification.hasMany(Emergency);
+Emergency.belongsTo(CargoClassification);
 
-CargoClassification.hasMany(CargoTrain);
-CargoTrain.belongsTo(CargoClassification);
-
-CargoState.hasMany(CargoTrain);
-CargoTrain.belongsTo(CargoState);
-
-CargoTrain.hasMany(Emergency);
-Emergency.belongsTo(CargoTrain);
+CargoState.hasMany(Emergency);
+Emergency.belongsTo(CargoState);
 
 RepairTrain.hasMany(Emergency);
 Emergency.belongsTo(RepairTrain);
@@ -142,7 +134,6 @@ module.exports = {
     Casualties,
     CargoState,
     CargoClassification,
-    Railway,
-    CargoTrain
+    Railway
 };
 
