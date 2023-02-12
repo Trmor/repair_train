@@ -42,7 +42,12 @@ app.get("/emergency", function(request, response){
     }).catch(err=>console.log(err));  
 });
 
+app.get("/edit/emergency/:id", function(request, response){
+    const id = request.params.id;
+    response.render("edit/emergency");
+});
+
 app.get("/login", function(request, response){
     isLogin = true;
     response.redirect("/emergency")
-})
+});

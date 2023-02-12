@@ -6,7 +6,9 @@
     border-radius: 25px;
     border: 2px solid rgb(36, 36, 36);
     padding: 20px;
-    width: 80%;
-    height: 80%;
+    width: 90%;
+    height: 100%;
     margin:auto;
+    text-align: left;
+    font-size: medium;
 }

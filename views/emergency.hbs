@@ -6,14 +6,16 @@
 <body>
     <div class="wrapper">
         {{#each Emergencies}}
-        <div class="block">
-            <div>{{TrainID}}</div>
-            <div>{{"cargoclass.Class"}}</div>
-            <div>{{"cargostate.State"}}</div>
-            <div>{{"casualty.State"}}</div>
-            <div>{{"repairtrain.TrainNumber"}}</div>
-            <div>{{"repairtrain.Manager"}}</div>
-        </div>
+        <form action="/edit/emergency/{{this.ID}}" method="get">
+            <button class="block" type="submit">
+            <div>Номер поезда: {{TrainID}}</div>
+            <div>Класс груза: {{"cargoclass.Class"}}</div>
+            <div>Состояние груза: {{"cargostate.State"}}</div>
+            <div>Пострадавшие : {{"casualty.State"}}</div>
+            <div>Номер ВП: {{"repairtrain.TrainNumber"}}</div>
+            <div>Управляющий ВП: {{"repairtrain.Manager"}}</div>
+            </button>
+        </form>
         {{/each}}
     </div>
 </body>
