@@ -4,5 +4,19 @@
 </head>
 
 <body>
-    <div>Test</div>
+    <div>
+        <h1>Редактирование ЧП</h1>
+        <form action= "/edit/emergency"method="POST">
+            <label>Номер поезда</label>
+            <input name="TrainID" class="field" value = "{{Emergencies.TrainID}}"><br><br>
+            <label>Класс Груза</label>
+            <select name="cargoclass">
+                {{#with Emergencies}}
+                <option value = "{{'cargoclass.ID'}}">{{'cargoclass.Class'}}</option>        
+                {{/with}}
+            </select><br><br>
+            <label>Номер ВП</label>
+            <input name="repairTrainNumber" class="field" value = "{{Emergencies.repairtrainTrainNumber}}"><br><br>
+        </form>
+    </div>
 </body>

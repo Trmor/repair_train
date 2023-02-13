@@ -44,7 +44,13 @@ app.get("/emergency", function(request, response){
 
 app.get("/edit/emergency/:id", function(request, response){
     const id = request.params.id;
-    response.render("edit/emergency");
+    DB.Emergency.findOne({where: {ID:id}, raw:true, include:{all:true, nested: true}})
+    .then(data=>{
+    console.log(data);
+    response.render("edit/emergency", {
+        Emergencies:data
+    });
+    }).catch(err=>console.log(err));
 });
 
 app.get("/login", function(request, response){
