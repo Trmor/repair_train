@@ -1,6 +1,7 @@
 const DB = require("./DB");
 const http = require('http');
 const express = require("express");
+const { raw } = require("express");
 const app = express();
 const urlencodedParser = express.urlencoded({extended:false});
 let isLogin = false; //под логин
@@ -44,7 +45,10 @@ app.get("/emergency", function(request, response){
 
 app.get("/edit/emergency/:id", function(request, response){
     const id = request.params.id;
-    DB.Emergency.findOne({where: {ID:id}, raw:true, include:{all:true, nested: true}})
+    const emergency = DB.Emergency.findOne({where: {ID:id}, raw:true, include:{all:true, nested: true}})
+    const cargoclass = DB.CargoClassification.findAll({raw:true});
+    const trainNumber = DB.RepairTrain.findAll({raw:true});
+    Promise.all([emergency, cargoclass, trainNumber])
     .then(data=>{
     console.log(data);
     response.render("edit/emergency", {
