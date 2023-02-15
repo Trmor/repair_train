@@ -42,12 +42,22 @@
                 {{/each}}
             </select><br><br>
 
+            <label>Повреждения инфраструктуры</label>
+            <select name="infrastructure">
+                {{#with Emergencies.[0]}}
+                <option value = "{{'infrastructure.ID'}}">{{'infrastructure.State'}}</option>        
+                {{/with}}
+                {{#each Emergencies.[4]}}
+                <option value = "{{'ID'}}">{{'State'}}</option>        
+                {{/each}}
+            </select><br><br>
+
             <label>Номер ВП</label>
             <select name="TrainNumber" >
                 {{#with Emergencies.[0]}}
                 <option value="{{'repairtrainTrainNumber'}}">{{"repairtrainTrainNumber"}}</option>
                 {{/with}}
-                {{#each Emergencies.[4]}}
+                {{#each Emergencies.[5]}}
                 <option value="{{'TrainNumber'}}">{{"TrainNumber"}}</option>
                 {{/each}}
             </select><br><br>
@@ -60,16 +70,20 @@
                 {{#with Emergencies.[0]}}
                 <option value="{{'railway.ID'}}">{{"railway.Name"}}</option>
                 {{/with}}
-                {{#each Emergencies.[5]}}
+                {{#each Emergencies.[6]}}
                 <option value="{{'ID'}}">{{"Name"}}</option>
                 {{/each}}
             </select><br><br>
 
             <input type="submit" value="Отправить" />
-        </form>
-
+        </form><br>
+        
         <form action="/emergency" method="GET" style="display:inline;">
             <input type="submit" value="Вернуться" />
+        </form><br><br><br>
+
+        <form action="/delete/emergency/{{Emergencies.[0].ID}}" method="POST" style="display:inline;">
+            <input type="submit" value="Удалить" />
         </form>
     </div>
 </body>

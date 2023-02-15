@@ -5,6 +5,9 @@
 
 <body>
     <div class="wrapper">
+        <form action="/create/emergency" method="get">
+            <button class="block" type="submit" style="text-align: center;">Создать новую запись</button>
+        </form>
         {{#each Emergencies}}
         <form action="/edit/emergency/{{this.ID}}" method="get">
             <button class="block" type="submit">
@@ -12,6 +15,7 @@
             <div>Класс груза: {{"cargoclass.Class"}}</div>
             <div>Состояние груза: {{"cargostate.State"}}</div>
             <div>Пострадавшие : {{"casualty.State"}}</div>
+            <div>Повреждения инфраструктуры : {{"infrastructure.State"}}</div>
             <div>Номер ВП: {{"repairtrain.TrainNumber"}}</div>
             <div>Управляющий ВП: {{"repairtrain.Manager"}}</div>
             <div>Геопозиция: {{"Geolocation"}}</div>
