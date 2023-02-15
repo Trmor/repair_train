@@ -47,8 +47,11 @@ app.get("/edit/emergency/:id", function(request, response){
     const id = request.params.id;
     const emergency = DB.Emergency.findOne({where: {ID:id}, raw:true, include:{all:true, nested: true}})
     const cargoclass = DB.CargoClassification.findAll({raw:true});
+    const cargostate = DB.CargoState.findAll({raw:true});
+    const casualties = DB.Casualties.findAll({raw:true});
     const trainNumber = DB.RepairTrain.findAll({raw:true});
-    Promise.all([emergency, cargoclass, trainNumber])
+    const railway = DB.Railway.findAll({raw:true});
+    Promise.all([emergency, cargoclass, cargostate, casualties, trainNumber, railway])
     .then(data=>{
     console.log(data);
     response.render("edit/emergency", {
@@ -60,4 +63,26 @@ app.get("/edit/emergency/:id", function(request, response){
 app.get("/login", function(request, response){
     isLogin = true;
     response.redirect("/emergency")
+});
+
+app.post("/edit/emergency", urlencodedParser, function(request, response){
+
+    if(!request.body) return response.sendStatus(400);
+
+    const id = request.body.id;
+    const trainId = request.body.TrainID;
+    const cargoclass = request.body.cargoclass;
+    const cargostate = request.body.cargostate;
+    const casualties = request.body.casualties;
+    const trainNumber = request.body.TrainNumber;
+    const geolocation = request.body.geolocation;
+    const railway = request.body.railway;
+
+    DB.Emergency.update(
+        {TrainID:trainId, cargoclassID: cargoclass, cargostateID: cargostate, casualtyID:casualties,
+            repairTrainTrainNumber: trainNumber, Geolocation:geolocation, railwayID: railway},
+        {where: {ID:id}})
+    .then(()=>{
+        response.redirect("/emergency")
+    }).catch(err=>console.log(err));
 });
