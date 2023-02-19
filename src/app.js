@@ -15,19 +15,20 @@ sequelize.sync().then(()=>{
     app.listen(3000);
 }).catch(err=>console.log(err));
 
-// app.use(function(request, response, next){
-//     if(!isLogin && request.path!='/'){//log in system, run before accessing the
-//         response.redirect("/");
-//     }
-//     next();
-// });
-
+function checkSignIn(request, response, next){
+    if(isLogin){
+       next();     //Если сессия существует, перейти дальше
+    } else {
+       var err = new Error("Not logged in!");
+       next(err);  //Печатает ошибку
+    }
+}
 
 app.get("/", function(request, response){
     response.render("index");
 });
 
-app.get("/emergency", function(request, response){
+app.get("/emergency", checkSignIn, function(request, response){
     DB.Emergency.findAll(
         {
         include:{
@@ -44,7 +45,7 @@ app.get("/emergency", function(request, response){
     }).catch(err=>console.log(err));  
 });
 
-app.get("/edit/emergency/:id", function(request, response){
+app.get("/edit/emergency/:id", checkSignIn, function(request, response){
     const id = request.params.id;
     const emergency = DB.Emergency.findOne({where: {ID:id}, raw:true, include:{all:true, nested: true}})
     const cargoclass = DB.CargoClassification.findAll({raw:true});
@@ -62,12 +63,23 @@ app.get("/edit/emergency/:id", function(request, response){
     }).catch(err=>console.log(err));
 });
 
-app.get("/login", function(request, response){
-    isLogin = true;
-    response.redirect("/emergency")
+app.post("/index", urlencodedParser,  function(request, response){
+    const user = request.body.username;
+    const pass = request.body.password;
+    const userInstance = DB.User.findByPk(user,{ raw:true, include:{all:true}})
+    Promise.resolve(userInstance).then(data=>{
+        if(data.password == pass)
+        {
+            isLogin = true;
+            response.redirect("/emergency")
+        }
+        else{
+            response.redirect("/")
+        }
+    })
 });
 
-app.get("/create/emergency", function(request, response){
+app.get("/create/emergency", checkSignIn, function(request, response){
 
     const cargoclass = DB.CargoClassification.findAll({raw:true});
     const cargostate = DB.CargoState.findAll({raw:true});
