@@ -4,7 +4,8 @@
 </head>
 
 <body>
-    <div>
+    <div class="bluredit">
+    <div class="edit">
         <h1>Редактирование ЧП</h1>
         <form action= "/edit/emergency"method="POST">
             <input type ="hidden" name="id" value="{{Emergencies.[0].ID}}" />
@@ -85,5 +86,6 @@
         <form action="/delete/emergency/{{Emergencies.[0].ID}}" method="POST" style="display:inline;">
             <input type="submit" value="Удалить" />
         </form>
+    </div>
     </div>
 </body>

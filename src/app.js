@@ -76,8 +76,11 @@ app.post("/index", urlencodedParser,  function(request, response){
         else{
             response.redirect("/")
         }
-    })
-});
+    }).catch(err=>{
+        console.log(err);
+        response.redirect("/");
+    }     
+    )});
 
 app.get("/create/emergency", checkSignIn, function(request, response){
 
@@ -143,6 +146,6 @@ app.post("/create/emergency", urlencodedParser, function(request, response){
 app.post("/delete/emergency/:id", function(request, response){  
     const id = request.params.id;
     DB.Emergency.destroy({where: {ID: id} }).then(() => {
-      res.redirect("/emergency");
+      response.redirect("/emergency");
     }).catch(err=>console.log(err));
   });
